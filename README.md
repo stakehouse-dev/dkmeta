@@ -22,18 +22,39 @@ However, the NFT description and image can be updated on chain in the way that h
 
 The description and image URL can be updated on the brand NFT contract. If you are an LSD network DAO owner, you will be able to execute the following function on the liquid staking manager contract of your network:
 
-![image](https://user-images.githubusercontent.com/102478146/250107466-15e5b194-2df6-4f01-bc46-0ca3a2b57451.png)
+```solidity
+function updateBrandInfo(
+        uint256 _tokenId, string calldata _description, string calldata _imageURI
+    ) external onlyDAO {
+        IBrandNFT(brand).setBrandMetadata(_tokenId, _description, _imageURI);
+    }
+```
 
 More information on how to fetch a liquid staking manager instance that from the wizard is here: [LSD wizard SDK - accessing liquid staking manager](https://docs.joinstakehouse.com/lsd/wizardcontract#getting-the-contract-instances)
 
 You can use community central and your brand to get closer to your community with automated loot generation every time a validator joins your house or LSD network. To do this, as the owner of the brand NFT, you will need to configure your brand. Here’s an example for the DAO to execute on the liquid staking manager of an LSD network:
 
-![image](https://user-images.githubusercontent.com/102478146/250107522-7f65d45e-2fb4-4efa-a4c8-b984d430f710.png)
+```solidity
+function registerBuildingTypeToBrand(uint256 _tokenId, uint256 _buildingType) external onlyDAO {
+        IBrandCentral(IBrandNFT(brand).brandCentral()).registerBuildingTypeToBrand(_tokenId, _buildingType);
+    }
+```
 
 
 What environment represents your community? Choose from:
 
-![image](https://user-images.githubusercontent.com/102478146/250107570-f8006339-ad3d-4f58-8d3e-da9a8d445f03.png)
+```solidity
+function buildingTypes() public pure returns (string[6] memory) {
+        return [
+        "None",
+        "Skyscraper",
+        "House",
+        "Office",
+        "Apartment Block",
+        "NFT Art Gallery"
+        ];
+    }
+```
 
 Once your community is configured, your community can claim a loot item for every validator that joins your house or LSD network. The items received is pseudo-randomised and only 1 loot item can be openly claimed by anyone per validator. This is a separate NFT as follows:
 
